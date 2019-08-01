@@ -2,8 +2,13 @@
 #include "main.h"
 #include "aton.h"
 #include <string.h>
+#include <string>
+#include "display/lvgl.h"
 
 using namespace pros::c;
+
+
+
 
 LCD::LCD()
 {
@@ -31,6 +36,17 @@ lv_res_t LCD::click_action(lv_obj_t * btn)
 
 lv_obj_t* LCD::CreateButton(uint8_t id, const char* label, lv_obj_t* container, lv_obj_t* prevElement, bool toggled)
 {
+    //define external image 
+
+
+    
+    LV_IMG_DECLARE(oldfluxcompat);
+
+    lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
+    lv_img_set_src(img1, &oldfluxcompat);
+    lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20);
+
+
     // ReportStatus("lcd: %d %d %s\n, id, toggled, label");
     lv_obj_t * btn = lv_btn_create(container, NULL);
     lv_btn_set_toggle(btn, true);
