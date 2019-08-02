@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include <math.h>
+#include <cmath>
 #include <cstdbool>
 #include <cstddef>
 #include <cstdint>

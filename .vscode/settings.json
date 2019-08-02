@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "apix.h": "c"
+        "apix.h": "c",
+        "xiosbase": "cpp",
+        "xlocale": "cpp"
     }
 }

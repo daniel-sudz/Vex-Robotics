@@ -36,15 +36,17 @@ lv_res_t LCD::click_action(lv_obj_t * btn)
 
 lv_obj_t* LCD::CreateButton(uint8_t id, const char* label, lv_obj_t* container, lv_obj_t* prevElement, bool toggled)
 {
-    //define external image 
+    //show fluxion logo on main screen  (acesses image from c array in src folder, causes file size ballooning as the old image converter does not compress and stores individual pixels)
+    //  commented for test LV_IMG_DECLARE(oldfluxcompat); //searches files for image array of this variable
+    //  commented for test lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL); //creates image object
+    //  commented for test lv_img_set_src(img1, &oldfluxcompat); //binds image object to image variable
+    //  commented for test lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20); //sets image object alignment 
 
-
-    
-    LV_IMG_DECLARE(oldfluxcompat);
-
-    lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
-    lv_img_set_src(img1, &oldfluxcompat);
-    lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20);
+    //show fluxion logo on main screen  (acesses image from binary file on sd card, allows compression while supporting older lvgl lib)
+    lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL); //creates image object
+    lv_img_set_src(img1, "fluxlogo_bin.bin"); //binds image object to external bin file on sd card
+    lv_obj_set_pos(img1, 0, 0);
+    //lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20); //sets image object alignment 
 
 
     // ReportStatus("lcd: %d %d %s\n, id, toggled, label");

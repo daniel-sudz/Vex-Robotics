@@ -14,7 +14,7 @@
 #pragma once
 
 #include "okapi/api/units/RQuantity.hpp"
-#include <math.h>
+#include <cmath>
 
 namespace okapi {
 QUANTITY_TYPE(0, 0, 0, 1, QAngle)
