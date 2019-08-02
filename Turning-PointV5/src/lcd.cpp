@@ -97,11 +97,14 @@ void LCD::CreateControls()
 int gif_count = 0;
 int gif_frame_count = 0;
 
-extern lv_obj_t * img_var;
+extern lv_obj_t * globe_object;
+extern const lv_img_t * globe_frames[]; 
 
 
 void LCD::Update()
 {   
+    /* 
+
     if (img_var && (gif_count % 5) == 4) {
         lv_img_set_src(img_var, nullptr);
     }
@@ -115,6 +118,19 @@ void LCD::Update()
     }
     
     gif_count++;
+   
+
+    if (gif_count % 20 == 0) {
+    lcd_gif_creation();
+
+
+    //lv_img_set_src(globe_object, globe_frames[gif_frame_count]);
+    //gif_frame_count = (gif_frame_count + 1) % 43;
+    }
+    gif_count ++;
+     /**/
+
+   
 
     if ((m_count % 50) == 0)
     {
