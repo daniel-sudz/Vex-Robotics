@@ -4,15 +4,19 @@
 #include <string.h>
 #include <string>
 #include "display/lvgl.h"
+#include <sstream>
+
 
 using namespace pros::c;
 
 
 
+extern void lcd_gif_creation();
 
 LCD::LCD()
 {
     CreateControls();
+    lcd_gif_creation();
 }
 
 lv_res_t LCD::click_action(lv_obj_t * btn) 
@@ -36,19 +40,6 @@ lv_res_t LCD::click_action(lv_obj_t * btn)
 
 lv_obj_t* LCD::CreateButton(uint8_t id, const char* label, lv_obj_t* container, lv_obj_t* prevElement, bool toggled)
 {
-    //show fluxion logo on main screen  (acesses image from c array in src folder, causes file size ballooning as the old image converter does not compress and stores individual pixels)
-    //  commented for test LV_IMG_DECLARE(oldfluxcompat); //searches files for image array of this variable
-    //  commented for test lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL); //creates image object
-    //  commented for test lv_img_set_src(img1, &oldfluxcompat); //binds image object to image variable
-    //  commented for test lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20); //sets image object alignment 
-
-    //show fluxion logo on main screen  (acesses image from binary file on sd card, allows compression while supporting older lvgl lib)
-    lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL); //creates image object
-    lv_img_set_src(img1, "fluxlogo_bin.bin"); //binds image object to external bin file on sd card
-    lv_obj_set_pos(img1, 0, 0);
-    //lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, -20); //sets image object alignment 
-
-
     // ReportStatus("lcd: %d %d %s\n, id, toggled, label");
     lv_obj_t * btn = lv_btn_create(container, NULL);
     lv_btn_set_toggle(btn, true);
@@ -103,8 +94,28 @@ void LCD::CreateControls()
     lv_obj_align(container, NULL, LV_ALIGN_IN_TOP_MID, 0, 10);
 }
 
+int gif_count = 0;
+int gif_frame_count = 0;
+
+extern lv_obj_t * img_var;
+
+
 void LCD::Update()
-{
+{   
+    if (img_var && (gif_count % 5) == 4) {
+        lv_img_set_src(img_var, nullptr);
+    }
+
+    if (img_var && (gif_count % 5) == 0) {
+        char final_path_to_gif[128];
+        snprintf(final_path_to_gif, sizeof(final_path_to_gif), "S:/usd/frame%d.bin", gif_frame_count);
+
+        lv_img_set_src(img_var, final_path_to_gif);
+        gif_frame_count = (gif_frame_count + 1) % 10;
+    }
+    
+    gif_count++;
+
     if ((m_count % 50) == 0)
     {
         sprintf(m_batteryBuffer, "Battery %.0f %%", battery_get_capacity());
